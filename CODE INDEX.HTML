@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>RFC Burger Catch Game</title>
+<style>
+body {
+    margin:0;
+    overflow:hidden;
+    background:black;
+    font-family:Arial;
+    color:white;
+    text-align:center;
+}
+#player {
+    width:80px;
+    height:40px;
+    background:yellow;
+    position:absolute;
+    bottom:20px;
+    left:50%;
+}
+.burger {
+    width:40px;
+    height:40px;
+    background:red;
+    border-radius:50%;
+    position:absolute;
+    top:0;
+}
+#score {
+    position:absolute;
+    top:10px;
+    left:10px;
+    font-size:20px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>RFC REAL FAST FOOD CAFE</h2>
+<div id="score">Score: 0</div>
+<div id="player"></div>
+
+<script>
+let player = document.getElementById("player");
+let score = 0;
+
+document.addEventListener("mousemove", function(e){
+    player.style.left = e.clientX - 40 + "px";
+});
+
+function createBurger(){
+    let burger = document.createElement("div");
+    burger.classList.add("burger");
+    burger.style.left = Math.random()*window.innerWidth + "px";
+    document.body.appendChild(burger);
+
+    let fall = setInterval(function(){
+        burger.style.top = burger.offsetTop + 5 + "px";
+
+        if(burger.offsetTop > window.innerHeight){
+            burger.remove();
+            clearInterval(fall);
+        }
+
+        if(
+            burger.offsetTop > window.innerHeight - 100 &&
+            burger.offsetLeft > player.offsetLeft - 40 &&
+            burger.offsetLeft < player.offsetLeft + 80
+        ){
+            score++;
+            document.getElementById("score").innerHTML = "Score: " + score;
+            burger.remove();
+            clearInterval(fall);
+        }
+    },30);
+}
+
+setInterval(createBurger,1000);
+</script>
+
+</body>
+</html>
